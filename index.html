@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>RSH × Stake — Wager Leaderboard</title>
+  <meta name="description" content="RSH × Stake monthly wager leaderboard for codes SUPPER, SUPPER10, SUPPERCAP." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="assets/rsh.jpg" type="image/jpeg" />
+  <!--
+    HOW TO USE
+    1) Click the ⚙️ Settings button (top-right) and paste your Google Sheet link.
+       - It should be the normal viewing URL, e.g.
+         https://docs.google.com/spreadsheets/d/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/edit?gid=235680015
+       - You do NOT need an API key. Make sure the sheet is viewable by "Anyone with the link".
+    2) Make sure your sheet has the following headers (case-insensitive):
+         affiliate_name | campaign_code | user_name | wagered | rank (optional)
+       - We auto-aggregate by user_name and filter to campaign_code in: supper, supper10, suppercap
+    3) Deploy anywhere (Netlify, Vercel, GitHub Pages). It's 100% static.
+  -->
+</head>
+<body>
+  <div class="bg"></div>
+  <div id="floaters" class="floaters"></div>
+  <div class="bg-icons">
+    <img src="assets/rsh.jpg" style="left:10%; animation-delay:0s;">
+    <img src="assets/stake.png" style="left:40%; animation-delay:5s;">
+    <img src="assets/rsh.jpg" style="left:70%; animation-delay:10s;">
+    <img src="assets/stake.png" style="left:85%; animation-delay:15s;">
+  </div>
+
+
+  <header class="site-header">
+    <div class="brand">
+      <img src="assets/rsh.jpg" alt="RSH logo" class="logo rsh">
+      <div class="x">×</div>
+      <img src="assets/stake.png" alt="Stake logo" class="logo stake">
+    </div>
+    <div class="title">
+      <h1>RSH × Stake — Wager Leaderboard</h1>
+      <p class="subtitle">Eligible codes: <strong>SUPPER</strong>, <strong>SUPPER10</strong>, <strong>SUPPERCAP</strong></p>
+      <p class="window">
+        <span id="date-window"></span>
+        <span class="dot">•</span>
+        <span id="countdown"></span>
+      </p>
+    </div>
+  <a href="http://stake.com/?c=Supper10" target="_blank" rel="noopener" class="signup-btn">Sign Up</a>
+  </header>
+
+  <main>
+
+    <section class="claim-banner">
+      ✅ Winners must submit a ticket in the <a href="https://discord.gg/kHCChyUWfB" target="_blank" rel="noopener">official Discord</a> once the leaderboard has ended to claim their prize.
+    </section>
+
+    <!-- Top 3 Podium -->
+    <section class="podium" id="podium">
+      <div class="card second">
+        <div class="place">2</div>
+        <div class="user" data-slot="2-user">—</div>
+        <div class="wager" data-slot="2-wager">—</div>
+        <div class="prize" data-slot="2-prize">—</div>
+      </div>
+      <div class="card first">
+        <svg class="crown" viewBox="0 0 64 32" aria-hidden="true"><path d="M2 28h60l-4-16-12 8-14-16-14 16-12-8z"/></svg>
+        <div class="place">1</div>
+        <div class="user" data-slot="1-user">—</div>
+        <div class="wager" data-slot="1-wager">—</div>
+        <div class="prize" data-slot="1-prize">—</div>
+      </div>
+      <div class="card third">
+        <div class="place">3</div>
+        <div class="user" data-slot="3-user">—</div>
+        <div class="wager" data-slot="3-wager">—</div>
+        <div class="prize" data-slot="3-prize">—</div>
+      </div>
+    </section>
+
+    <!-- Leaderboard Table -->
+    <section class="board">
+      <div class="board-head">
+        <div class="left">
+          <h2>Live Leaderboard</h2>
+          <div class="meta">
+            <span id="last-updated">Last updated —</span>
+            
+          </div>
+        </div>
+        <div class="right">
+          <input id="search" class="search" type="search" placeholder="Search username…" />
+          <button id="refreshBtn" class="btn">Refresh</button>
+        </div>
+      </div>
+
+      <div class="legend top-legend">
+        <h3>$1,000 Monthly Prize Pool</h3>
+        <ul id="prize-split"></ul>
+      </div>
+
+      <div id="status" class="status">
+        <div class="spinner"></div>
+        <span>Fetching data…</span>
+      </div>
+
+      <div class="table-wrap">
+        <table id="table">
+          <thead>
+            <tr>
+              <th>Place</th>
+              <th>User</th>
+              <th>Wagered</th>
+              <th>Prize</th>
+              <th>Campaign</th>
+            </tr>
+          </thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div>
+    </section>
+
+
+    <section class="rtp-disclaimer">
+      <h3>Wager Counting Rules</h3>
+      <ul>
+        <li>Games with RTP of 98% or lower → <strong>100%</strong> of wagered amount will count</li>
+        <li>Games with RTP above 98% → <strong>50%</strong> of wagered amount will count</li>
+        <li>Games with RTP of 99% or higher → <strong>10%</strong> of wagered amount will count</li>
+      </ul>
+      <p class="note">(These rules exist to prevent wager abuse.)</p>
+    </section>
+
+    <section class="disclaimer">
+      <p><strong>Disclaimer:</strong> RSH is not responsible for bets or losses. Gambling involves risk. Please play responsibly.</p>
+    </section>
+
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>
