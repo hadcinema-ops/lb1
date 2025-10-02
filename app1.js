@@ -8,8 +8,8 @@ const CONFIG_DEFAULT = {
   allowedCampaigns: ["supper","supper10","suppercap"],
   prizePool: 1000,
   splits: [0.50,0.25,0.125,0.075,0.05],
-  dateStart: Date.UTC(2025, 8, 1, 0, 0, 0),
-  dateEnd:   Date.UTC(2025, 9, 1, 0, 0, 0),
+  dateStart: Date.UTC(2025, 9, 1, 0, 0, 0),
+  dateEnd:   Date.UTC(2025, 10, 1, 0, 0, 0),
   refreshSecs: 60,
   maxRows: 100
 };
@@ -319,10 +319,24 @@ function restartAutoRefresh(){
 // Search & refresh
 document.getElementById("search").addEventListener("input", ()=>{ applySearch(); render(); });
 document.getElementById("refreshBtn").addEventListener("click", ()=> loadAndRender());
+const _lastBtn = document.getElementById("lastMonthBtn");
+if (_lastBtn) {
+  _lastBtn.addEventListener("click", () => {
+    state.config.dateStart = Date.UTC(2025, 8, 1, 0, 0, 0);
+    state.config.dateEnd   = Date.UTC(2025, 9, 1, 0, 0, 0);
+    setSheetGid("1502602180");
+    setDateWindow();
+    loadAndRender();
+  });
+}
+
 
 // Initial boot
 (function boot(){
   // Set header info
+  // Force Oct 1 → Nov 1, 2025 even if localStorage had older values
+  state.config.dateStart = Date.UTC(2025, 9, 1, 0, 0, 0);
+  state.config.dateEnd   = Date.UTC(2025, 10, 1, 0, 0, 0);
   setDateWindow();
   startCountdown();
   renderPrizeLegend();
