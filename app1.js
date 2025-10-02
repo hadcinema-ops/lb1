@@ -6,8 +6,8 @@ const CONFIG_DEFAULT = {
   allowedCampaigns: ["supper","supper10","suppercap"],
   prizePool: 1000,
   splits: [0.50,0.25,0.125,0.075,0.05],
-  dateStart: Date.UTC(2025, 8, 1, 0, 0, 0),
-  dateEnd:   Date.UTC(2025, 9, 1, 0, 0, 0),
+  dateStart: Date.UTC(2025, 9, 1, 0, 0, 0),
+  dateEnd:   Date.UTC(2025, 10, 1, 0, 0, 0),
   refreshSecs: 60,
   maxRows: 100
 };
@@ -317,6 +317,20 @@ function restartAutoRefresh(){
 // Search & refresh
 document.getElementById("search").addEventListener("input", ()=>{ applySearch(); render(); });
 document.getElementById("refreshBtn").addEventListener("click", ()=> loadAndRender());
+
+try {
+  const lastBtn = document.getElementById("lastMonthBtn");
+  if (lastBtn) {
+    lastBtn.addEventListener("click", () => {
+      // Set to September 1 → October 1 (last month)
+      state.config.dateStart = Date.UTC(2025, 8, 1, 0, 0, 0);
+      state.config.dateEnd   = Date.UTC(2025, 9, 1, 0, 0, 0);
+      setDateWindow();
+      loadAndRender();
+    });
+  }
+} catch (e) { /* no-op */ }
+
 
 // Initial boot
 (function boot(){
