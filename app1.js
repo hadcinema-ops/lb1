@@ -1,13 +1,15 @@
 /* RSH × Stake — Wager Leaderboard
    No backend. Reads Google Sheets CSV/JSON. Renders live leaderboard with prize logic.
 */
+const LAST_MONTH_GID = '1502602180';
+
 const CONFIG_DEFAULT = {
   sheetUrl: "https://docs.google.com/spreadsheets/d/137chphmYQrEtCxVXvFPMKukOXratCG_AgUrOgZBn8B8/edit?gid=235680015", // paste your Google Sheet link in the Settings (⚙️)
   allowedCampaigns: ["supper","supper10","suppercap"],
   prizePool: 1000,
   splits: [0.50,0.25,0.125,0.075,0.05],
-  dateStart: Date.UTC(2025, 9, 1, 0, 0, 0),
-  dateEnd:   Date.UTC(2025, 10, 1, 0, 0, 0),
+  dateStart: Date.UTC(2025, 8, 1, 0, 0, 0),
+  dateEnd:   Date.UTC(2025, 9, 1, 0, 0, 0),
   refreshSecs: 60,
   maxRows: 100
 };
@@ -96,8 +98,7 @@ function toCsvUrl(url){
   // default: first sheet
   return `https://docs.google.com/spreadsheets/d/${id}/gviz/tq?tqx=out:csv`;
 }
-function toJsonUrl(url){// (helpers below)
-
+function toJsonUrl(url){
   const id = extractSheetId(url);
   if(!id) return null;
   // gviz json of first sheet
@@ -318,41 +319,20 @@ function restartAutoRefresh(){
 // Search & refresh
 document.getElementById("search").addEventListener("input", ()=>{ applySearch(); render(); });
 document.getElementById("refreshBtn").addEventListener("click", ()=> loadAndRender());
-try {
-  const lastBtn = document.getElementById("lastMonthBtn");
-  if (lastBtn) {
-    lastBtn.addEventListener("click", () => {
-      // Switch to last month (Sept 1 → Oct 1, 2025)
-      state.config.dateStart = Date.UTC(2025, 8, 1, 0, 0, 0);
-      state.config.dateEnd   = Date.UTC(2025, 9, 1, 0, 0, 0);
-      // If ?last_gid=123 is provided, switch to that tab for last month's data
-      if (state.config._lastGid) {
-        setSheetGid(state.config._lastGid);
-      }
-      setDateWindow();
-      loadAndRender();
-    });
-  }
-} catch(e) {}
-
 
 // Initial boot
 (function boot(){
   // Set header info
-  // Force desired default month (Oct 1 → Nov 1, 2025)
-  state.config.dateStart = Date.UTC(2025, 9, 1, 0, 0, 0);
-  state.config.dateEnd   = Date.UTC(2025, 10, 1, 0, 0, 0);
   setDateWindow();
   startCountdown();
   renderPrizeLegend();
   
   // Source link + optional gid override via URL param
   const urlParams = new URLSearchParams(location.search);
+  state.config._lastGid = urlParams.get('last_gid') || LAST_MONTH_GID;
   const overrideGid = urlParams.get("gid");
-  const lastGid = urlParams.get("last_gid");
-  state.config._thisGid = overrideGid || extractGid(state.config.sheetUrl) || null;
-  state.config._lastGid = lastGid || null;
   if(overrideGid && state.config.sheetUrl){
+    // if a gid is provided, append/replace inside saved sheet URL for this session
     const id = extractSheetId(state.config.sheetUrl);
     if(id) state.config.sheetUrl = `https://docs.google.com/spreadsheets/d/${id}/edit?gid=${overrideGid}`;
   }
