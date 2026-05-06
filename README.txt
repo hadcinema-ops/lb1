@@ -10,7 +10,7 @@ A polished, production-ready static site. No backend required.
 4. Paste the Google Sheet link in Settings and hit **Save**. The site auto-refreshes every 60s.
 
 **Eligible campaigns**: supper, supper10, suppercap  
-**Dates**: Sep 1, 2025 → Oct 1, 2025  
+**Dates**: Automatically resets from the 1st day of each month to the 1st day of the next month  
 **Prize Pool**: $250 split: 50% / 25% / 12.5% / 7.5% / 5%
 
 ## Deploy
