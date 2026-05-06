@@ -6,7 +6,7 @@ const LAST_MONTH_GID = '1502602180';
 const CONFIG_DEFAULT = {
   sheetUrl: "https://docs.google.com/spreadsheets/d/137chphmYQrEtCxVXvFPMKukOXratCG_AgUrOgZBn8B8/edit?gid=235680015", // paste your Google Sheet link in the Settings (⚙️)
   allowedCampaigns: ["supper","supper10","suppercap"],
-  prizePool: 1000,
+  prizePool: 250,
   splits: [0.50,0.25,0.125,0.075,0.05],
   dateStart: Date.UTC(2025, 9, 1, 0, 0, 0),
   dateEnd:   Date.UTC(2025, 10, 1, 0, 0, 0),

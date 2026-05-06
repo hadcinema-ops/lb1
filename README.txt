@@ -11,7 +11,7 @@ A polished, production-ready static site. No backend required.
 
 **Eligible campaigns**: supper, supper10, suppercap  
 **Dates**: Sep 1, 2025 → Oct 1, 2025  
-**Prize Pool**: $1000 split: 50% / 25% / 12.5% / 7.5% / 5%
+**Prize Pool**: $250 split: 50% / 25% / 12.5% / 7.5% / 5%
 
 ## Deploy
 - **Netlify**: drag the folder or connect a repo. (No build step needed.)
